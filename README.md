@@ -5,6 +5,12 @@
 **_Bot should be sent the question and doing selection with provide answer as well_**
  
 
+## About
+
+[Original Bot](https://t.me/quiz_cpns_telegram_bot) to provide quiz and cat photos for this [Telegram group](https://t.me/+BGsGi0s6SZQ4YjU1)
+
+<img src="src/demo/image.png" width="150">
+
 ## The requirements:
 
 - Basic Network Requirements: `express`, `mongodb`, and stuff.
@@ -16,6 +22,6 @@
 
 ### Now, with bare hands, creates:
 
-1. nodejs telegram api
+1. ~~nodejs telegram api~~ [done]
 2. nodejs client showing
 3. ~~online database management~~ [done]

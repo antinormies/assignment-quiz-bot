@@ -4,8 +4,8 @@ const express = require('express'),
     dotenv = require('dotenv').config({
         path: __dirname + '/.env'
     }),
-    telegramRoute = require('./src/telegram/api');
-
+    telegramRoute = require('./src/telegram/api'),
+    viewRoute = require('./views/index');
     
 app = express();
 app.use(cors())
@@ -13,6 +13,8 @@ app.use(bodyParser.urlencoded({
     extended: false
 }))
 app.use(bodyParser.json());
+app.set('view engine', 'ejs');
+
 app.get('/test-drive', (req, res,next) => {
     res.status(200);
     res.setHeader('Content-Type', 'application/json');
@@ -25,7 +27,9 @@ app.get('/test-drive', (req, res,next) => {
     })
 });
 
-app.use('/bot/',telegramRoute);
+app.use('/bot/', telegramRoute);
+app.use('/page/', viewRoute);
+
 app.use((req, res, next)=>{
     res.status(404);
     res.json({
