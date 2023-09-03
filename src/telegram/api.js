@@ -155,7 +155,7 @@ router.post('/push-2', upload.single('file'), async(req, res) => {
             break;
     }
 
-    if(message !== undefined){
+    if(message !== ""){
         botInstance.sendMessage(BOT_GROUP_ID, message, {
             protect_content: true
         });
