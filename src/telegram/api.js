@@ -117,7 +117,6 @@ router.post('/push-2', upload.single('file'), async(req, res) => {
     if(file == undefined) return response.ERROR("File should not be empty, press back", res)
 
     let form = new FormData()
-    const message = req.body.message
     switch (type) {
         case "image":
             form.append("photo", file.buffer, file.originalname)
@@ -155,7 +154,8 @@ router.post('/push-2', upload.single('file'), async(req, res) => {
             break;
     }
 
-    if(message != ""){
+    const message = req.body.message
+    if(message.length){
         botInstance.sendMessage(BOT_GROUP_ID, message, {
             protect_content: true
         });
