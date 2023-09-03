@@ -102,7 +102,6 @@ router.post('/push-1', upload.single('image'), async(req, res) =>{
         return response.ERROR("Check Again", res)
     }
 
-    await setTimeout(1000)
     botInstance.sendPoll(BOT_GROUP_ID, question, options, {
         correct_option_id: ((answer==0)?0:(answer-1)),
         type: 'quiz',
@@ -160,7 +159,6 @@ router.post('/push-2', upload.single('file'), async(req, res) => {
 
     const message = req.body.message
     if(message.length){
-        await setTimeout(1000)
         botInstance.sendMessage(BOT_GROUP_ID, message, {
             protect_content: true
         });
