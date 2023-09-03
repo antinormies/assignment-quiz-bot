@@ -59,17 +59,68 @@ router.get('/keyboard-2', async(req, res) => {
 router.get('/message', async(req, res) => {
     const message = req.query.pesan
     botInstance.sendMessage(BOT_GROUP_ID, (message=="")?"Hi!":message)
-    response.SUCCESS("Well done, all is okay", null, res)
+
+    res.redirect('/page/message')
 })
 
 router.post('/push-1', upload.single('image'), async(req, res) =>{
-    if(req.body.type=='soal'){
-        const hasImage = req.body.hasImage
-        if(hasImage) {
-            const image = req.file
-            let form = new FormData()
-            form.append("photo", image.buffer, image.originalname)
-            
+    const hasImage = req.body.hasImage
+    if(hasImage) {
+        const image = req.file
+        if(image == undefined) return response.ERROR("File should not be empty, press back", res)
+
+        let form = new FormData()
+        form.append("photo", image.buffer, image.originalname)
+        
+        await axios({
+            url:`https://api.telegram.org/bot${BOT_TOKEN}/sendPhoto?chat_id=${BOT_GROUP_ID}`,
+            method: 'POST',
+            data: form,
+            headers: {
+                'Content-Type': "multipart/form-data",
+            }
+        })
+        .then((res)=> console.log(res))
+        .catch((err)=> console.log(err))
+    }
+
+    const question = (req.body.question === "")?"what's the answer?":req.body.question
+    const hint = (req.body.hint === "")?"nothing":req.body.hint
+    const options = [
+        `${req.body.option_1}`,
+        `${req.body.option_2}`,
+        `${req.body.option_3}`,
+        `${req.body.option_4}`,
+        `${req.body.option_5}`
+    ]
+    const answer = (req.body.answer == undefined)?0:req.body.answer
+
+    if(question=="" || options.length == 0 || hint == ""){
+        return response.ERROR("Check Again", res)
+    }
+
+    botInstance.sendPoll(BOT_GROUP_ID, question, options, {
+        correct_option_id: ((answer==0)?0:(answer-1)),
+        type: 'quiz',
+        explanation: hint,
+        open_period: 90,
+        protect_content: true
+    })
+
+    res.redirect('/page/home')
+})
+
+
+router.post('/push-2', upload.single('file'), async(req, res) => {
+    const type = req.body.type // three option [image, document, audio]
+    const file = req.file
+    if(file == undefined) return response.ERROR("File should not be empty, press back", res)
+
+    let form = new FormData()
+    const message = req.body.message
+    switch (type) {
+        case "image":
+            form.append("photo", file.buffer, file.originalname)
             await axios({
                 url:`https://api.telegram.org/bot${BOT_TOKEN}/sendPhoto?chat_id=${BOT_GROUP_ID}`,
                 method: 'POST',
@@ -78,40 +129,40 @@ router.post('/push-1', upload.single('image'), async(req, res) =>{
                     'Content-Type': "multipart/form-data",
                 }
             })
-            .then((res)=> console.log(res))
-            .catch((err)=> console.log(err))
-        }
+            break;
+        case "document":
+            form.append("document", file.buffer, file.originalname)
+            await axios({
+                url:`https://api.telegram.org/bot${BOT_TOKEN}/sendDocument?chat_id=${BOT_GROUP_ID}`,
+                method: 'POST',
+                data: form,
+                headers: {
+                    'Content-Type': "multipart/form-data",
+                }
+            })
+            break;
 
-        const question = req.body.question
-        const hint = req.body.hint
-        const options = [
-            `${req.body.option_1}`,
-            `${req.body.option_2}`,
-            `${req.body.option_3}`,
-            `${req.body.option_4}`,
-            `${req.body.option_5}`
-        ]
-        const answer = req.body.answer
-
-        if(question=="" || options.length == 0 || hint == ""){
-            return response.ERROR("Check Again", res)
-        }
-
-        botInstance.sendPoll(BOT_GROUP_ID, question, options, {
-            correct_option_id: ((answer==0)?0:(answer-1)),
-            type: 'quiz',
-            explanation: hint,
-            open_period: 90,
-            protect_content: true
-        })
-
-    }else{
-        // currently not supported yet
-        return response.ERROR("Not supported yet")
-        const file = req.body.image
-        if(file === null) return response.ERROR("File should not be empty", res)
+        case "audio":
+            form.append("audio", file.buffer, file.originalname)
+            await axios({
+                url:`https://api.telegram.org/bot${BOT_TOKEN}/sendAudio?chat_id=${BOT_GROUP_ID}`,
+                method: 'POST',
+                data: form,
+                headers: {
+                    'Content-Type': "multipart/form-data",
+                }
+            })
+            break;
     }
-    res.redirect('/page/home')
+
+    if(message !== undefined){
+        botInstance.sendMessage(BOT_GROUP_ID, message, {
+            protect_content: true
+        });
+    }
+    
+    res.redirect('/page/message')
 })
+
 
 module.exports = router;

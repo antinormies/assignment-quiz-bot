@@ -23,5 +23,5 @@
 ### Now, with bare hands, creates:
 
 1. ~~nodejs telegram api~~ [done]
-2. nodejs client showing
+2. ~~nodejs client showing~~ [done]
 3. ~~online database management~~ [done]

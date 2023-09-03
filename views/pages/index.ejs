@@ -6,79 +6,121 @@
   <body class="container">
     <header><%- include('../partials/header'); %></header>
 
-    <main class="row col-12">
-      <form class="col-6" method="POST" action="/bot/push-1" enctype="multipart/form-data">
-        <div class="form-group">
-          <label for="type">Type (Soal/File)</label>
-          <select id="type" class="form-control"  name="type">
-            <option value="soal" selected>Soal</option>
-            <option value="file">File</option>
-          </select>
+    <main class="col-12">
+      <div class="mt-4 card">
+        <div class="card-header">
+          <h3 class="card-title">Posting Quiz</h3>
         </div>
-        <div class="form-group">
-          <label for="image">Select/Paste The Image (optional)</label>
-          <input
-            type="file"
-            class="form-control"
-            id="image"
-            name="image"
-          />
-        </div>
-        <div class="form-group">
-          <label for="question">Question</label>
-          <input
-            type="text"
-            class="form-control"
-            id="question"
-            placeholder="This will appears in the top"
-            name="question"
-          />
-        </div>
-        <div class="form-group">
-          <label for="hint">Hint</label>
-          <input
-            type="text"
-            class="form-control"
-            id="hint"
-            placeholder="Hint for the question"
-            name="hint"
-          />
-        </div>
-        <div class="form-group">
-          <label>Options</label>
-          <input type="option-1" class="form-control" value="1" name="option_1"/>
-          <input type="option-2" class="form-control" value="2" name="option_2"/>
-          <input type="option-3" class="form-control" value="3" name="option_3"/>
-          <input type="option-4" class="form-control" value="4" name="option_4"/>
-          <input type="option-5" class="form-control" value="5" name="option_5"/>
-        </div>
-        <div class="form-group">
-          <label for="right-answer">Right Answer</label>
-          <input
-            type="number"
-            class="form-control"
-            id="right-answer"
-            placeholder="0"
-            name="answer"
-          />
-        </div>
-        <div class="form-check">
-          <input type="checkbox" class="form-check-input" id="exampleCheck1" name="hasImage"/>
-          <label class="form-check-label" for="exampleCheck1"
-            >With Image?</label
+        <div class="card-body">
+          <form
+            class="row"
+            method="POST"
+            action="/bot/push-1"
+            enctype="multipart/form-data"
           >
+            <div class="col-6">
+              <div class="form-group">
+                <label for="image">Select/Paste The Image (optional)</label>
+                <input
+                  type="file"
+                  class="form-control"
+                  id="image"
+                  name="image"
+                />
+              </div>
+              <div class="form-check">
+                <input
+                  type="checkbox"
+                  class="form-check-input"
+                  id="exampleCheck1"
+                  name="hasImage"
+                />
+                <label class="form-check-label" for="exampleCheck1"
+                  >With Image?</label
+                >
+              </div>
+              <div class="form-group mt-3">
+                <label for="question">Question</label>
+                <input
+                  type="text"
+                  class="form-control"
+                  id="question"
+                  placeholder="This will appears in the top"
+                  name="question"
+                />
+              </div>
+              <div class="form-group">
+                <label for="hint">Hint</label>
+                <input
+                  type="text"
+                  class="form-control"
+                  id="hint"
+                  placeholder="Hint for the question"
+                  name="hint"
+                />
+              </div>
+            </div>
+
+            <div class="col-6">
+              <div class="form-group">
+                <label>Options</label>
+                <input
+                  type="option-1"
+                  class="form-control"
+                  value="1"
+                  name="option_1"
+                />
+                <input
+                  type="option-2"
+                  class="form-control"
+                  value="2"
+                  name="option_2"
+                />
+                <input
+                  type="option-3"
+                  class="form-control"
+                  value="3"
+                  name="option_3"
+                />
+                <input
+                  type="option-4"
+                  class="form-control"
+                  value="4"
+                  name="option_4"
+                />
+                <input
+                  type="option-5"
+                  class="form-control"
+                  value="5"
+                  name="option_5"
+                />
+              </div>
+              <div class="form-group">
+                <label for="right-answer">Right Answer</label>
+                <input
+                  type="number"
+                  class="form-control"
+                  id="right-answer"
+                  placeholder="0"
+                  name="answer"
+                />
+              </div>
+              <button type="submit" class="btn btn-primary my-3">Submit</button>
+            </div>
+          </form>
         </div>
-        <button type="submit" class="btn btn-primary my-3">Submit</button>
-      </form>
+        <div class="card-footer">
+          <p>Please re-check all the form again</p>
+        </div>
+      </div>
     </main>
 
     <footer><%- include('../partials/footer'); %></footer>
   </body>
 
   <script>
-    window.addEventListener('paste', e => {
-        image.files = e.clipboardData.files;
+    window.addEventListener("paste", (e) => {
+      image.files = e.clipboardData.files;
     });
   </script>
 </html>
-
