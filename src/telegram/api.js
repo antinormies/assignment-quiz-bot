@@ -17,8 +17,8 @@ const botInstance = new TelegramBot(BOT_TOKEN, {
     polling : true,
 })
 
-botInstance.setWebhook(`https://real-tan-pike-sock.cyclic.app`)
-// botInstance.setWebhook(`https://real-tan-pike-sock.cyclic.app/bot${BOT_TOKEN}`)
+botInstance.setWebHook(`https://real-tan-pike-sock.cyclic.app`)
+// botInstance.setWebHook(`https://real-tan-pike-sock.cyclic.app/bot${BOT_TOKEN}`)
 
 botInstance.onText(/\/cat/, msg =>{
     botInstance.sendPhoto(BOT_GROUP_ID, "https://cataas.com/cat", {
